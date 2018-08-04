@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <iomanip>
+#include <valarray>
 
 // Load utils
 #include "util.h"
@@ -63,6 +64,33 @@ typedef encode_f_3D_wrapper<uint_fast64_t, uint_fast32_t> encode_3D_64_wrapper;
 typedef encode_f_3D_wrapper<uint_fast32_t, uint_fast16_t> encode_3D_32_wrapper;
 typedef decode_f_3D_wrapper<uint_fast64_t, uint_fast32_t> decode_3D_64_wrapper;
 typedef decode_f_3D_wrapper<uint_fast32_t, uint_fast16_t> decode_3D_32_wrapper;
+
+template<std::size_t FieldCount>
+uint64_t split_by_n(uint64_t input, size_t bitsRemaining) {
+	return (bitsRemaining == 0) ? input : (split_by_n<FieldCount>(input >> 1, bitsRemaining - 1) << FieldCount) | (input & 1);
+}
+
+template<std::size_t FieldCount>
+uint64_t control_encode(size_t bitCount, const std::valarray<uint64_t>& fields) {
+	if (fields.size() == 1) {
+		return split_by_n<FieldCount>(fields[std::slice(0, 1, 1)][0], bitCount);
+	}
+
+	return (control_encode<FieldCount>(bitCount, fields[std::slice(1, fields.size() - 1, 1)]) << 1)
+		   | split_by_n<FieldCount>(fields[std::slice(0, 1, 1)][0], bitCount);
+}
+
+/**
+ * Runtime Morton encoding using 64-bit fields. bitCount * |fields| must be <64.
+ *
+ * @param bitCount The number of bits (starting with LSb) in each field.
+ * @param fields The fields to encode.
+ * @return The Morton encoding.
+ */
+template<typename...T>
+uint64_t control_encode(size_t bitCount, T... fields) {
+	return control_encode<sizeof...(fields)>(bitCount, { fields... });
+}
 
 template <typename valtype>
 inline string getBitString(valtype val) {
