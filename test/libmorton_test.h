@@ -22,6 +22,8 @@
 #include "../libmorton/include/morton2D.h"
 #include "../libmorton/include/morton3D.h"
 #include "../libmorton/include/morton.h"
+#include "../morton-nd/morton-nd/include/mortonND_encoder.h"
+
 
 template <typename morton, typename coord>
 struct encode_f_2D_wrapper {
