@@ -1,3 +1,26 @@
+## Fork Changes
+This is a fork of libmorton which includes [Morton ND](github.com/kevinhartman/morton-nd) as a Git submodule.
+
+The purpose of this fork is to provide benchmarking for Morton ND using the validation and performance test library written by Jeroen Baert (@Forceflow).
+
+The hope is that this will demonstrate:
+  - Morton ND's implementation is equivalent to a static LUT approach (hard-coded) such as the one found in libmorton.
+  - Tuning LUT table size based on target architecture and access pattern can significantly improve performance, something infeasible for hard-coded LUT approaches.
+
+As such, the test code now includes an integration with various Morton ND configurations for 32-bit and 64-bit 2D and 3D applications.
+
+### Building
+Note that C++14 is required to build, a requirement imposed by Morton ND. Also, ensure release build settings are used for accurate performance metrics.
+
+Building will take a long time (2-3 minutes on a decent laptop from ~2016). This is because many large LUTs are generated for these tests (some as large at 2^21 entries used to validate extreme cases).
+
+<blockquote>
+<b>macOS note:</b></p>
+The original libmorton `LUT ET` and `LUT Shifted ET` tests do not seem to work on macOS. Comment out any lines in `libmorton_test.cpp::registerFunctions` with either of those names if you experience a runtime hang, or relevant build failures.
+</blockquote>
+
+*Original README.md contents below*
+
 # Libmorton
 [![Build Status](https://travis-ci.org/Forceflow/libmorton.svg?branch=master)](https://travis-ci.org/Forceflow/libmorton) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT)
 
