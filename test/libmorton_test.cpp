@@ -196,7 +196,7 @@ int main(int argc, char *argv[]) {
 	cout << "++ Checking 2D methods for correctness" << endl;
 	check2D_EncodeCorrectness<uint_fast64_t, uint_fast32_t>(f2D_64_encode);
 	check2D_EncodeCorrectness<uint_fast32_t, uint_fast16_t>(f2D_32_encode);
-	// TODO: check 2D zdecode for correctness
+	// TODO: check 2D decode for correctness
 	
 	cout << "++ Running each performance test " << times << " times and averaging results" << endl;
 	for (int i = 128; i <= 512; i = i * 2){
