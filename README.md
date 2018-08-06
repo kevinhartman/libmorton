@@ -1,23 +1,23 @@
 ## Fork Changes
-This is a fork of libmorton which includes [Morton ND](github.com/kevinhartman/morton-nd) as a Git submodule.
+This is a fork of libmorton which includes [Morton ND](https://github.com/kevinhartman/morton-nd) as a Git submodule.
 
-The purpose of this fork is to provide benchmarking for Morton ND using the validation and performance test library written by Jeroen Baert (@Forceflow).
+The purpose of this fork is to provide benchmarking for Morton ND using the libmorton validation and performance test library written by Jeroen Baert (@Forceflow). See [Morton ND's README.md](https://github.com/kevinhartman/morton-nd/blob/master/README.md#3d-performance) for a sample set of performance metrics.
+
+As such, its test code includes various Morton ND configurations for 32-bit and 64-bit 2D and 3D applications.
 
 The hope is that this will demonstrate:
-  - Morton ND's implementation is equivalent to a static LUT approach (hard-coded) such as the one found in libmorton.
-  - Tuning LUT table size based on target architecture and access pattern can significantly improve performance, something infeasible for hard-coded LUT approaches.
+  - Morton ND's implementation is performance equivalent to a static LUT approach (hard-coded) such as the one found in libmorton.
+  - Tuning LUT table size based on target architecture and access pattern (possible using Morton ND's compile-time LUT generation) can significantly improve performance, something infeasible for hard-coded LUT approaches.
 
-As such, the test code now includes an integration with various Morton ND configurations for 32-bit and 64-bit 2D and 3D applications.
+Furthermore, this fork may provide an easy way for users to compare algorithms based on their target application and architecture. 
 
 ### Building
-Note that C++14 is required to build, a requirement imposed by Morton ND. Also, ensure release build settings are used for accurate performance metrics.
+Note that C++14 is required to build, a requirement imposed by Morton ND. Also, ensure release build settings are used for accurate performance metrics, and that BMI2 is defined if your CPU supports it to see results for the BMI approach found in libmorton.
 
 Building will take a long time (2-3 minutes on a decent laptop from ~2016). This is because many large LUTs are generated for these tests (some as large at 2^21 entries used to validate extreme cases).
 
-<blockquote>
-<b>macOS note:</b></p>
-The original libmorton `LUT ET` and `LUT Shifted ET` tests do not seem to work on macOS. Comment out any lines in `libmorton_test.cpp::registerFunctions` with either of those names if you experience a runtime hang, or relevant build failures.
-</blockquote>
+### macOS
+The original libmorton `LUT ET` and `LUT Shifted ET` tests do not seem to work on macOS. Comment out any lines in `libmorton_test.cpp::registerFunctions` with either of those names if you experience a runtime hang, or relevant build failures. See [this commit](https://github.com/kevinhartman/libmorton/commit/740595b7011dbad9f0bae5722293aca84eacc76c) for an example.
 
 *Original README.md contents below*
 
