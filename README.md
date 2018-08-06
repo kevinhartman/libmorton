@@ -1,7 +1,7 @@
 ## Fork Changes
 This is a fork of libmorton which includes [Morton ND](https://github.com/kevinhartman/morton-nd) as a Git submodule.
 
-The purpose of this fork is to provide benchmarking for Morton ND using the libmorton validation and performance test library written by Jeroen Baert (@Forceflow). See [Morton ND's README.md](https://github.com/kevinhartman/morton-nd/blob/master/README.md#3d-performance) for a sample set of performance metrics.
+The purpose of this fork is to provide benchmarking for Morton ND using the libmorton validation and performance test library written by Jeroen Baert (@Forceflow). See [Morton ND's README.md](https://github.com/kevinhartman/morton-nd/blob/master/README.md#performance) for a sample set of performance metrics.
 
 As such, its test code includes various Morton ND configurations for 32-bit and 64-bit 2D and 3D applications.
 
