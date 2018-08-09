@@ -23,25 +23,21 @@ vector<uint_fast64_t> running_sums;
 /// END GLOBALS
 
 // Morton ND BMI2 (N = 2)
-using MortonND_2D_32_BMI = mortonnd::MortonNDBmiEncoder<2, uint32_t>;
 static inline auto MortonND_2D_32_BMI_Encode(const uint16_t x, const uint16_t y) {
-    return MortonND_2D_32_BMI::Encode(x, y);
+    return mortonnd::MortonNDBmiEncoder<2, uint32_t>().Encode(x, y);
 }
 
-using MortonND_2D_64_BMI = mortonnd::MortonNDBmiEncoder<2, uint64_t>;
 static inline auto MortonND_2D_64_BMI_Encode(const uint32_t x, const uint32_t y) {
-    return MortonND_2D_64_BMI::Encode(x, y);
+    return mortonnd::MortonNDBmiEncoder<2, uint64_t>().Encode(x, y);
 }
 
 // Morton ND BMI2 (N = 3)
-using MortonND_3D_32_BMI = mortonnd::MortonNDBmiEncoder<3, uint32_t>;
 static inline auto MortonND_3D_32_BMI_Encode(const uint16_t x, const uint16_t y, const uint16_t z) {
-    return MortonND_3D_32_BMI::Encode(x, y, z);
+    return mortonnd::MortonNDBmiEncoder<3, uint32_t>().Encode(x, y, z);
 }
 
-using MortonND_3D_64_BMI = mortonnd::MortonNDBmiEncoder<3, uint64_t>;
 static inline auto MortonND_3D_64_BMI_Encode(const uint32_t x, const uint32_t y, const uint32_t z) {
-    return MortonND_3D_64_BMI::Encode(x, y, z);
+    return mortonnd::MortonNDBmiEncoder<3, uint64_t>().Encode(x, y, z);
 }
 
 // Morton ND LUT (N = 2)
