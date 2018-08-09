@@ -22,6 +22,7 @@ size_t RAND_POOL_SIZE = 10000;
 vector<uint_fast64_t> running_sums;
 /// END GLOBALS
 
+#if defined(__BMI2__)
 // Morton ND BMI2 (N = 2)
 static inline auto MortonND_2D_32_BMI_Encode(const uint16_t x, const uint16_t y) {
     return mortonnd::MortonNDBmiEncoder<2, uint32_t>().Encode(x, y);
@@ -39,6 +40,7 @@ static inline auto MortonND_3D_32_BMI_Encode(const uint16_t x, const uint16_t y,
 static inline auto MortonND_3D_64_BMI_Encode(const uint32_t x, const uint32_t y, const uint32_t z) {
     return mortonnd::MortonNDBmiEncoder<3, uint64_t>().Encode(x, y, z);
 }
+#endif
 
 // Morton ND LUT (N = 2)
 // 4 chunks per field, 4 bits each = 16 per field
@@ -182,7 +184,6 @@ void registerFunctions() {
 	f3D_64_encode.push_back(encode_3D_64_wrapper("MortonND: 3 chunks, 7 bit LUT", MortonND_3D_64_7_Encode));
 	f3D_64_encode.push_back(encode_3D_64_wrapper("MortonND: 2 chunks, 16 bit LUT", MortonND_3D_64_16_Encode));
 	f3D_64_encode.push_back(encode_3D_64_wrapper("MortonND: 1 chunks, 21 bit LUT", MortonND_3D_64_21_Encode));
-	f3D_64_encode.push_back(encode_3D_64_wrapper("MortonND: BMI2", MortonND_3D_64_BMI_Encode));
 
 	// Register 3D 32-bit encode functions
 	f3D_32_encode.push_back(encode_3D_32_wrapper("For", &m3D_e_for<uint_fast32_t, uint_fast16_t>));
@@ -196,8 +197,6 @@ void registerFunctions() {
 	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: 2 chunks, 5 bit LUT", MortonND_3D_32_5_Encode));
 	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: 2 chunks, 8 bit LUT", MortonND_3D_32_8_Encode));
 	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: 1 chunks, 10 bit LUT", MortonND_3D_32_10_Encode));
-
-	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: BMI2", MortonND_3D_32_BMI_Encode));
 
 	// Register 3D 64-bit decode functions
 	f3D_64_decode.push_back(decode_3D_64_wrapper("LUT Shifted ET", &m3D_d_sLUT_ET<uint_fast64_t, uint_fast32_t>));
@@ -223,6 +222,10 @@ void registerFunctions() {
 	f3D_32_encode.push_back(encode_3D_32_wrapper("BMI2 instruction set", &m3D_e_BMI<uint_fast32_t, uint_fast16_t>));
 	f3D_64_decode.push_back(decode_3D_64_wrapper("BMI2 Instruction set", &m3D_d_BMI<uint_fast64_t, uint_fast32_t>));
 	f3D_32_decode.push_back(decode_3D_32_wrapper("BMI2 Instruction set", &m3D_d_BMI<uint_fast32_t, uint_fast16_t>));
+	f3D_64_encode.push_back(encode_3D_64_wrapper("MortonND: BMI2", MortonND_3D_64_BMI_Encode));
+	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: BMI2", MortonND_3D_32_BMI_Encode));
+	f2D_64_encode.push_back(encode_2D_64_wrapper("MortonND: BMI2", MortonND_2D_64_BMI_Encode));
+	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: BMI2", MortonND_2D_32_BMI_Encode));
 #endif
 
 	// Register 2D 64-bit encode functions
@@ -235,7 +238,6 @@ void registerFunctions() {
 	f2D_64_encode.push_back(encode_2D_64_wrapper("For", &m2D_e_for<uint_fast64_t, uint_fast32_t>));
 	f2D_64_encode.push_back(encode_2D_64_wrapper("MortonND: 4 chunks, 8 bit LUT", MortonND_2D_64_8_Encode));
 	f2D_64_encode.push_back(encode_2D_64_wrapper("MortonND: 2 chunks, 16 bit LUT", MortonND_2D_64_16_Encode));
-	f2D_64_encode.push_back(encode_2D_64_wrapper("MortonND: BMI2", MortonND_2D_64_BMI_Encode));
 
 	// Register 2D 32-bit encode functions
 	f2D_32_encode.push_back(encode_2D_32_wrapper("For", &m2D_e_for<uint_fast32_t, uint_fast16_t>));
@@ -249,7 +251,6 @@ void registerFunctions() {
 	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: 4 chunks, 4 bit LUT", MortonND_2D_32_4_Encode));
 	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: 2 chunks, 8 bit LUT", MortonND_2D_32_8_Encode));
 	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: 1 chunks, 16 bit LUT", MortonND_2D_32_16_Encode));
-	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: BMI2", MortonND_2D_32_BMI_Encode));
 
 	// Register 2D 64-bit decode functions
 	f2D_64_decode.push_back(decode_2D_64_wrapper("LUT Shifted ET", &m2D_d_sLUT_ET<uint_fast64_t, uint_fast32_t>));
