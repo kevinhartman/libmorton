@@ -40,6 +40,10 @@ static inline auto MortonND_3D_32_BMI_Encode(const uint16_t x, const uint16_t y,
     return MortonND_3D_32_BMI.Encode(x, y, z);
 }
 
+static inline void MortonND_3D_32_BMI_Decode(const uint32_t encoding, uint16_t& x, uint16_t& y, uint16_t& z) {
+	std::tie(x, y, z) = MortonND_3D_32_BMI.Decode(encoding);
+}
+
 constexpr auto MortonND_3D_64_BMI = mortonnd::MortonNDBmi<3, uint64_t>();
 static inline auto MortonND_3D_64_BMI_Encode(const uint32_t x, const uint32_t y, const uint32_t z) {
     return MortonND_3D_64_BMI.Encode(x, y, z);
@@ -232,6 +236,9 @@ void registerFunctions() {
 	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: BMI2", MortonND_3D_32_BMI_Encode));
 	f2D_64_encode.push_back(encode_2D_64_wrapper("MortonND: BMI2", MortonND_2D_64_BMI_Encode));
 	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: BMI2", MortonND_2D_32_BMI_Encode));
+
+	f3D_32_decode.push_back(decode_3D_32_wrapper("MortonND: BMI2", MortonND_3D_32_BMI_Decode));
+
 #endif
 
 	// Register 2D 64-bit encode functions
