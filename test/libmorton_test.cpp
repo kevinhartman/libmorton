@@ -43,58 +43,60 @@ static inline auto MortonND_3D_64_BMI_Encode(const uint32_t x, const uint32_t y,
 #endif
 
 // Morton ND LUT (N = 2)
-// 4 chunks per field, 4 bits each = 16 per field
+constexpr auto MortonND_2D_32_4 = mortonnd::MortonNDLutEncoder<2, 16, 4>(); // 4 chunks per field, 4 bits each = 16 per field
 constexpr auto MortonND_2D_32_4_Encode(const uint16_t x, const uint16_t y) {
-	return mortonnd::MortonNDLutEncoder<2, 16, 4>().Encode(x, y);
+	return MortonND_2D_32_4.Encode(x, y);
 }
 
-// 2 chunks per field, 8 bits each = 16 per field
+constexpr auto MortonND_2D_32_8 = mortonnd::MortonNDLutEncoder<2, 16, 8>(); // 2 chunks per field, 8 bits each = 16 per field
 constexpr auto MortonND_2D_32_8_Encode(const uint16_t x, const uint16_t y) {
-	return mortonnd::MortonNDLutEncoder<2, 16, 8>().Encode(x, y);
+	return MortonND_2D_32_8.Encode(x, y);
 }
 
-// 1 chunks per field, 16 bits each = 16 per field
+constexpr auto MortonND_2D_32_16 = mortonnd::MortonNDLutEncoder<2, 16, 16>(); // 1 chunks per field, 16 bits each = 16 per field
 constexpr auto MortonND_2D_32_16_Encode(const uint16_t x, const uint16_t y) {
-	return mortonnd::MortonNDLutEncoder<2, 16, 16>().Encode(x, y);
+	return MortonND_2D_32_16.Encode(x, y);
 }
 
-// 4 chunks per field, 8 bits each = 32 per field
+constexpr auto MortonND_2D_64_8 = mortonnd::MortonNDLutEncoder<2, 32, 8>(); // 4 chunks per field, 8 bits each = 32 per field
 constexpr auto MortonND_2D_64_8_Encode(const uint32_t x, const uint32_t y) {
-	return mortonnd::MortonNDLutEncoder<2, 32, 8>().Encode(x, y);
+	return MortonND_2D_64_8.Encode(x, y);
 }
 
-// 2 chunks per field, 16 bits each = 32 per field
+constexpr auto MortonND_2D_64_16 = mortonnd::MortonNDLutEncoder<2, 32, 16>(); // 2 chunks per field, 16 bits each = 32 per field
 constexpr auto MortonND_2D_64_16_Encode(const uint32_t x, const uint32_t y) {
-	return mortonnd::MortonNDLutEncoder<2, 32, 16>().Encode(x, y);
+	return MortonND_2D_64_16.Encode(x, y);
 }
 
 // Morton ND LUT (N = 3)
-// 2 chunks per field, 5 bits each = 10 per field
+constexpr auto MortonND_3D_32_5 = mortonnd::MortonNDLutEncoder<3, 10, 5>(); // 2 chunks per field, 5 bits each = 10 per field
 constexpr auto MortonND_3D_32_5_Encode(const uint16_t x, const uint16_t y, const uint16_t z) {
-	return mortonnd::MortonNDLutEncoder<3, 10, 5>().Encode(x, y, z);
+	return MortonND_3D_32_5.Encode(x, y, z);
 }
 
+constexpr auto MortonND_3D_32_8 = mortonnd::MortonNDLutEncoder<3, 10, 8>(); //
 constexpr auto MortonND_3D_32_8_Encode(const uint16_t x, const uint16_t y, const uint16_t z) {
-	return mortonnd::MortonNDLutEncoder<3, 10, 8>().Encode(x, y, z);
+	return MortonND_3D_32_8.Encode(x, y, z);
 }
 
-// 1 chunks per field, 10 bits each = 10 per field
+constexpr auto MortonND_3D_32_10 = mortonnd::MortonNDLutEncoder<3, 10, 10>(); // 1 chunks per field, 10 bits each = 10 per field
 constexpr auto MortonND_3D_32_10_Encode(const uint16_t x, const uint16_t y, const uint16_t z) {
-	return mortonnd::MortonNDLutEncoder<3, 10, 10>().Encode(x, y, z);
+	return MortonND_3D_32_10.Encode(x, y, z);
 }
 
-// 3 chunks per field, 7 bits each = 21 per field
+constexpr auto MortonND_3D_64_7 = mortonnd::MortonNDLutEncoder<3, 21, 7>(); // 3 chunks per field, 7 bits each = 21 per field
 constexpr auto MortonND_3D_64_7_Encode(const uint32_t x, const uint32_t y, const uint32_t z) {
-	return mortonnd::MortonNDLutEncoder<3, 21, 7>().Encode(x, y, z);
+	return MortonND_3D_64_7.Encode(x, y, z);
 }
 
+constexpr auto MortonND_3D_64_16 = mortonnd::MortonNDLutEncoder<3, 21, 16>();
 constexpr auto MortonND_3D_64_16_Encode(const uint32_t x, const uint32_t y, const uint32_t z) {
-	return mortonnd::MortonNDLutEncoder<3, 21, 16>().Encode(x, y, z);
+	return MortonND_3D_64_16.Encode(x, y, z);
 }
 
-// 3 chunks per field, 7 bits each = 21 per field
+constexpr auto MortonND_3D_64_21 = mortonnd::MortonNDLutEncoder<3, 21, 21>(); // 3 chunks per field, 7 bits each = 21 per field
 constexpr auto MortonND_3D_64_21_Encode(const uint32_t x, const uint32_t y, const uint32_t z) {
-	return mortonnd::MortonNDLutEncoder<3, 21, 21>().Encode(x, y, z);
+	return MortonND_3D_64_21.Encode(x, y, z);
 }
 
 // 3D functions collections
