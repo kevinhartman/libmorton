@@ -6,16 +6,16 @@ The purpose of this fork is to provide benchmarking for Morton ND using the libm
 As such, its test code includes various Morton ND configurations for 32-bit and 64-bit 2D and 3D applications.
 
 The hope is that this will demonstrate:
+  - Morton ND's N-dimensional BMI2 hardware approach does not add overhead to the minimal implementation of calling and manipulating the results of native PDEP and PEXT instructions in assembly.
   - Morton ND's N-dimensional compile-time LUT generation implementation is performance equivalent to a static LUT approach (hard-coded) such as the one found in libmorton.
   - Tuning LUT table size based on target architecture and access pattern (possible using Morton ND's compile-time LUT generation) can significantly improve performance, something infeasible for hard-coded LUT approaches.
-  - Morton ND's N-dimensional BMI2 hardware approach does not add overhead to the minimal implementation of calling and manipulating the results of native PDEP and PEXT instructions in assembly.
 
 Furthermore, this fork may provide an easy way for users to compare algorithms based on their target application and architecture. 
 
 ### Compiling
 Note that C++14 is required to build, a requirement imposed by Morton ND. The `CMakeLists.txt` sets `-mbmi2` to enable BMI2 (hardware encoding) test paths. If your CPU does not support the BMI2 instruction set, remove the flag to disable corresponding tests. Always ensure release build settings are used for accurate performance metrics.
 
-Building will take a long time (2-3 minutes on a decent laptop from ~2016). This is because many large LUTs are generated for these tests (some as large at 2^21 entries used to validate extreme cases).
+Building will take a long time (2-3 minutes on a decent laptop from ~2016). This is because large LUTs are generated for these tests (some as large at 2^21 entries used to validate extreme cases).
 
 ### macOS
 The original libmorton `LUT ET` and `LUT Shifted ET` tests do not seem to work on macOS. Comment out any lines in `libmorton_test.cpp::registerFunctions` with either of those names if you experience a runtime hang, or relevant build failures. See [this commit](https://github.com/kevinhartman/libmorton/commit/740595b7011dbad9f0bae5722293aca84eacc76c) for an example.
