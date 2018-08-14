@@ -17,7 +17,7 @@ static bool check2D_EncodeFunction(const encode_f_2D_wrapper<morton, coord> &fun
 	morton computed_code, correct_code = 0;
 	for (coord i = 0; i < 16; i++) {
 		for (coord j = 0; j < 16; j++) {
-			correct_code = control_encode(4, i, j);
+			correct_code = control_encode(i, j);
 			computed_code = function.encode(i, j);
 			if (computed_code != correct_code) {
 				everything_okay = false;
