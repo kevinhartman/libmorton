@@ -22,101 +22,41 @@ size_t RAND_POOL_SIZE = 10000;
 vector<uint_fast64_t> running_sums;
 /// END GLOBALS
 
-#if defined(__BMI2__)
-// Morton ND BMI2 (N = 2)
-using MortonND_2D_32_BMI = mortonnd::MortonNDBmi<2, uint32_t>;
-static inline auto MortonND_2D_32_BMI_Encode(const uint16_t x, const uint16_t y) {
-    return MortonND_2D_32_BMI::Encode(x, y);
-}
-
-static inline void MortonND_2D_32_BMI_Decode(const uint32_t encoding, uint16_t& x, uint16_t& y) {
-    std::tie(x, y) = MortonND_2D_32_BMI::Decode(encoding);
-}
-
-using MortonND_2D_64_BMI = mortonnd::MortonNDBmi<2, uint64_t>;
-static inline auto MortonND_2D_64_BMI_Encode(const uint32_t x, const uint32_t y) {
-    return MortonND_2D_64_BMI::Encode(x, y);
-}
-
-static inline void MortonND_2D_64_BMI_Decode(const uint64_t encoding, uint32_t& x, uint32_t& y) {
-    std::tie(x, y) = MortonND_2D_64_BMI::Decode(encoding);
-}
-
-// Morton ND BMI2 (N = 3)
-using MortonND_3D_32_BMI = mortonnd::MortonNDBmi<3, uint32_t>;
-static inline auto MortonND_3D_32_BMI_Encode(const uint16_t x, const uint16_t y, const uint16_t z) {
-    return MortonND_3D_32_BMI::Encode(x, y, z);
-}
-
-static inline void MortonND_3D_32_BMI_Decode(const uint32_t encoding, uint16_t& x, uint16_t& y, uint16_t& z) {
-	std::tie(x, y, z) = MortonND_3D_32_BMI::Decode(encoding);
-}
-
-using MortonND_3D_64_BMI = mortonnd::MortonNDBmi<3, uint64_t>;
-static inline auto MortonND_3D_64_BMI_Encode(const uint32_t x, const uint32_t y, const uint32_t z) {
-    return MortonND_3D_64_BMI::Encode(x, y, z);
-}
-
-static inline void MortonND_3D_64_BMI_Decode(const uint64_t encoding, uint32_t& x, uint32_t& y, uint32_t& z) {
-    std::tie(x, y, z) = MortonND_3D_64_BMI::Decode(encoding);
-}
-#endif
-
 // Morton ND LUT (N = 2)
 constexpr auto MortonND_2D_32_4 = mortonnd::MortonNDLutEncoder<2, 16, 4>(); // 4 chunks per field, 4 bits each = 16 per field
-constexpr auto MortonND_2D_32_4_Encode(const uint16_t x, const uint16_t y) {
+constexpr auto MortonND_2D_32_4_Encode(const uint_fast16_t x, const uint_fast16_t y) {
 	return MortonND_2D_32_4.Encode(x, y);
 }
 
 constexpr auto MortonND_2D_32_8 = mortonnd::MortonNDLutEncoder<2, 16, 8>(); // 2 chunks per field, 8 bits each = 16 per field
-constexpr auto MortonND_2D_32_8_Encode(const uint16_t x, const uint16_t y) {
+constexpr auto MortonND_2D_32_8_Encode(const uint_fast16_t x, const uint_fast16_t y) {
 	return MortonND_2D_32_8.Encode(x, y);
 }
 
-constexpr auto MortonND_2D_32_16 = mortonnd::MortonNDLutEncoder<2, 16, 16>(); // 1 chunks per field, 16 bits each = 16 per field
-constexpr auto MortonND_2D_32_16_Encode(const uint16_t x, const uint16_t y) {
-	return MortonND_2D_32_16.Encode(x, y);
-}
-
 constexpr auto MortonND_2D_64_8 = mortonnd::MortonNDLutEncoder<2, 32, 8>(); // 4 chunks per field, 8 bits each = 32 per field
-constexpr auto MortonND_2D_64_8_Encode(const uint32_t x, const uint32_t y) {
+constexpr auto MortonND_2D_64_8_Encode(const uint_fast32_t x, const uint_fast32_t y) {
 	return MortonND_2D_64_8.Encode(x, y);
-}
-
-constexpr auto MortonND_2D_64_16 = mortonnd::MortonNDLutEncoder<2, 32, 16>(); // 2 chunks per field, 16 bits each = 32 per field
-constexpr auto MortonND_2D_64_16_Encode(const uint32_t x, const uint32_t y) {
-	return MortonND_2D_64_16.Encode(x, y);
 }
 
 // Morton ND LUT (N = 3)
 constexpr auto MortonND_3D_32_5 = mortonnd::MortonNDLutEncoder<3, 10, 5>(); // 2 chunks per field, 5 bits each = 10 per field
-constexpr auto MortonND_3D_32_5_Encode(const uint16_t x, const uint16_t y, const uint16_t z) {
+constexpr auto MortonND_3D_32_5_Encode(const uint_fast16_t x, const uint_fast16_t y, const uint_fast16_t z) {
 	return MortonND_3D_32_5.Encode(x, y, z);
 }
 
 constexpr auto MortonND_3D_32_8 = mortonnd::MortonNDLutEncoder<3, 10, 8>(); //
-constexpr auto MortonND_3D_32_8_Encode(const uint16_t x, const uint16_t y, const uint16_t z) {
+constexpr auto MortonND_3D_32_8_Encode(const uint_fast16_t x, const uint_fast16_t y, const uint_fast16_t z) {
 	return MortonND_3D_32_8.Encode(x, y, z);
 }
 
 constexpr auto MortonND_3D_32_10 = mortonnd::MortonNDLutEncoder<3, 10, 10>(); // 1 chunks per field, 10 bits each = 10 per field
-constexpr auto MortonND_3D_32_10_Encode(const uint16_t x, const uint16_t y, const uint16_t z) {
+constexpr auto MortonND_3D_32_10_Encode(const uint_fast16_t x, const uint_fast16_t y, const uint_fast16_t z) {
 	return MortonND_3D_32_10.Encode(x, y, z);
 }
 
 constexpr auto MortonND_3D_64_7 = mortonnd::MortonNDLutEncoder<3, 21, 7>(); // 3 chunks per field, 7 bits each = 21 per field
-constexpr auto MortonND_3D_64_7_Encode(const uint32_t x, const uint32_t y, const uint32_t z) {
+constexpr auto MortonND_3D_64_7_Encode(const uint_fast32_t x, const uint_fast32_t y, const uint_fast32_t z) {
 	return MortonND_3D_64_7.Encode(x, y, z);
-}
-
-constexpr auto MortonND_3D_64_16 = mortonnd::MortonNDLutEncoder<3, 21, 16>();
-constexpr auto MortonND_3D_64_16_Encode(const uint32_t x, const uint32_t y, const uint32_t z) {
-	return MortonND_3D_64_16.Encode(x, y, z);
-}
-
-constexpr auto MortonND_3D_64_21 = mortonnd::MortonNDLutEncoder<3, 21, 21>(); // 3 chunks per field, 7 bits each = 21 per field
-constexpr auto MortonND_3D_64_21_Encode(const uint32_t x, const uint32_t y, const uint32_t z) {
-	return MortonND_3D_64_21.Encode(x, y, z);
 }
 
 // 3D functions collections
@@ -192,6 +132,99 @@ void printHeader(){
 #endif
 }
 
+#if _MSC_VER
+void registerIfNotMSVC() {
+	// MSVC is not compatible with Morton ND LUT sizes > 10
+}
+#else
+constexpr auto MortonND_2D_32_16 = mortonnd::MortonNDLutEncoder<2, 16, 16>(); // 1 chunks per field, 16 bits each = 16 per field
+constexpr auto MortonND_2D_32_16_Encode(const uint16_t x, const uint16_t y) {
+	return MortonND_2D_32_16.Encode(x, y);
+}
+
+constexpr auto MortonND_3D_64_16 = mortonnd::MortonNDLutEncoder<3, 21, 16>();
+constexpr auto MortonND_3D_64_16_Encode(const uint32_t x, const uint32_t y, const uint32_t z) {
+	return MortonND_3D_64_16.Encode(x, y, z);
+}
+
+constexpr auto MortonND_3D_64_21 = mortonnd::MortonNDLutEncoder<3, 21, 21>(); // 3 chunks per field, 7 bits each = 21 per field
+constexpr auto MortonND_3D_64_21_Encode(const uint32_t x, const uint32_t y, const uint32_t z) {
+	return MortonND_3D_64_21.Encode(x, y, z);
+}
+
+constexpr auto MortonND_2D_64_16 = mortonnd::MortonNDLutEncoder<2, 32, 16>(); // 2 chunks per field, 16 bits each = 32 per field
+constexpr auto MortonND_2D_64_16_Encode(const uint32_t x, const uint32_t y) {
+	return MortonND_2D_64_16.Encode(x, y);
+}
+
+void registerIfNotMSVC() {
+	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: 1 chunks, 16 bit LUT", MortonND_2D_32_16_Encode));
+	f2D_64_encode.push_back(encode_2D_64_wrapper("MortonND: 2 chunks, 16 bit LUT", MortonND_2D_64_16_Encode));
+	f3D_64_encode.push_back(encode_3D_64_wrapper("MortonND: 2 chunks, 16 bit LUT", MortonND_3D_64_16_Encode));
+	f3D_64_encode.push_back(encode_3D_64_wrapper("MortonND: 1 chunks, 21 bit LUT", MortonND_3D_64_21_Encode));
+}
+#endif
+
+#if defined(__BMI2__) || __AVX2__
+// Register 3D BMI intrinsics if available
+
+// Morton ND BMI2 (N = 2)
+using MortonND_2D_32_BMI = mortonnd::MortonNDBmi<2, uint32_t>;
+static inline auto MortonND_2D_32_BMI_Encode(const uint_fast16_t x, const uint_fast16_t y) {
+	return MortonND_2D_32_BMI::Encode(x, y);
+}
+
+static inline void MortonND_2D_32_BMI_Decode(const uint_fast32_t encoding, uint_fast16_t& x, uint_fast16_t& y) {
+	std::tie(x, y) = MortonND_2D_32_BMI::Decode(encoding);
+}
+
+using MortonND_2D_64_BMI = mortonnd::MortonNDBmi<2, uint64_t>;
+static inline auto MortonND_2D_64_BMI_Encode(const uint_fast32_t x, const uint_fast32_t y) {
+	return MortonND_2D_64_BMI::Encode(x, y);
+}
+
+static inline void MortonND_2D_64_BMI_Decode(const uint_fast64_t encoding, uint_fast32_t& x, uint_fast32_t& y) {
+	std::tie(x, y) = MortonND_2D_64_BMI::Decode(encoding);
+}
+
+// Morton ND BMI2 (N = 3)
+using MortonND_3D_32_BMI = mortonnd::MortonNDBmi<3, uint32_t>;
+static inline auto MortonND_3D_32_BMI_Encode(const uint_fast16_t x, const uint_fast16_t y, const uint_fast16_t z) {
+	return MortonND_3D_32_BMI::Encode(x, y, z);
+}
+
+static inline void MortonND_3D_32_BMI_Decode(const uint_fast32_t encoding, uint_fast16_t& x, uint_fast16_t& y, uint_fast16_t& z) {
+	std::tie(x, y, z) = MortonND_3D_32_BMI::Decode(encoding);
+}
+
+using MortonND_3D_64_BMI = mortonnd::MortonNDBmi<3, uint64_t>;
+static inline auto MortonND_3D_64_BMI_Encode(const uint_fast32_t x, const uint_fast32_t y, const uint_fast32_t z) {
+	return MortonND_3D_64_BMI::Encode(x, y, z);
+}
+
+static inline void MortonND_3D_64_BMI_Decode(const uint_fast64_t encoding, uint_fast32_t& x, uint_fast32_t& y, uint_fast32_t& z) {
+	std::tie(x, y, z) = MortonND_3D_64_BMI::Decode(encoding);
+}
+
+void registerBMI2Functions() {
+	f3D_64_encode.push_back(encode_3D_64_wrapper("BMI2 instruction set", &m3D_e_BMI<uint_fast64_t, uint_fast32_t>));
+	f3D_32_encode.push_back(encode_3D_32_wrapper("BMI2 instruction set", &m3D_e_BMI<uint_fast32_t, uint_fast16_t>));
+	f3D_64_decode.push_back(decode_3D_64_wrapper("BMI2 Instruction set", &m3D_d_BMI<uint_fast64_t, uint_fast32_t>));
+	f3D_32_decode.push_back(decode_3D_32_wrapper("BMI2 Instruction set", &m3D_d_BMI<uint_fast32_t, uint_fast16_t>));
+	f3D_64_encode.push_back(encode_3D_64_wrapper("MortonND: BMI2", &MortonND_3D_64_BMI_Encode));
+	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: BMI2", &MortonND_3D_32_BMI_Encode));
+	f2D_64_encode.push_back(encode_2D_64_wrapper("MortonND: BMI2", &MortonND_2D_64_BMI_Encode));
+	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: BMI2", &MortonND_2D_32_BMI_Encode));
+
+	f3D_64_decode.push_back(decode_3D_64_wrapper("MortonND: BMI2", &MortonND_3D_64_BMI_Decode));
+	f3D_32_decode.push_back(decode_3D_32_wrapper("MortonND: BMI2", &MortonND_3D_32_BMI_Decode));
+	f2D_64_decode.push_back(decode_2D_64_wrapper("MortonND: BMI2", &MortonND_2D_64_BMI_Decode));
+	f2D_32_decode.push_back(decode_2D_32_wrapper("MortonND: BMI2", &MortonND_2D_32_BMI_Decode));
+}
+#else
+void registerBMI2Functions() { }
+#endif
+
 // Register all the functions we want to be tested here!
 void registerFunctions() {
 	// Register 3D 64-bit encode functions
@@ -203,10 +236,8 @@ void registerFunctions() {
 	f3D_64_encode.push_back(encode_3D_64_wrapper("For ET", &m3D_e_for_ET<uint_fast64_t, uint_fast32_t>));
 	f3D_64_encode.push_back(encode_3D_64_wrapper("For", &m3D_e_for<uint_fast64_t, uint_fast32_t>));
 
-	f3D_64_encode.push_back(encode_3D_64_wrapper("MortonND: 3 chunks, 7 bit LUT", MortonND_3D_64_7_Encode));
-	f3D_64_encode.push_back(encode_3D_64_wrapper("MortonND: 2 chunks, 16 bit LUT", MortonND_3D_64_16_Encode));
-	f3D_64_encode.push_back(encode_3D_64_wrapper("MortonND: 1 chunks, 21 bit LUT", MortonND_3D_64_21_Encode));
-
+	f3D_64_encode.push_back(encode_3D_64_wrapper("MortonND: 3 chunks, 7 bit LUT", &MortonND_3D_64_7_Encode));
+	
 	// Register 3D 32-bit encode functions
 	f3D_32_encode.push_back(encode_3D_32_wrapper("For", &m3D_e_for<uint_fast32_t, uint_fast16_t>));
 	f3D_32_encode.push_back(encode_3D_32_wrapper("For ET", &m3D_e_for_ET<uint_fast32_t, uint_fast16_t>));
@@ -216,9 +247,9 @@ void registerFunctions() {
 	f3D_32_encode.push_back(encode_3D_32_wrapper("LUT Shifted", &m3D_e_sLUT<uint_fast32_t, uint_fast16_t>));
 	f3D_32_encode.push_back(encode_3D_32_wrapper("LUT Shifted ET", [](uint_fast16_t x, uint_fast16_t y, uint_fast16_t z) -> uint_fast32_t { return m3D_e_sLUT_ET<uint_fast32_t, uint_fast32_t>(x, y, z); }));
 
-	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: 2 chunks, 5 bit LUT", MortonND_3D_32_5_Encode));
-	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: 2 chunks, 8 bit LUT", MortonND_3D_32_8_Encode));
-	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: 1 chunks, 10 bit LUT", MortonND_3D_32_10_Encode));
+	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: 2 chunks, 5 bit LUT", &MortonND_3D_32_5_Encode));
+	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: 2 chunks, 8 bit LUT", &MortonND_3D_32_8_Encode));
+	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: 1 chunks, 10 bit LUT", &MortonND_3D_32_10_Encode));
 
 	// Register 3D 64-bit decode functions
 	f3D_64_decode.push_back(decode_3D_64_wrapper("LUT Shifted ET", &m3D_d_sLUT_ET<uint_fast64_t, uint_fast32_t>));
@@ -238,23 +269,6 @@ void registerFunctions() {
 	f3D_32_decode.push_back(decode_3D_32_wrapper("LUT Shifted", &m3D_d_sLUT<uint_fast32_t, uint_fast16_t>));
 	f3D_32_decode.push_back(decode_3D_32_wrapper("LUT Shifted ET", &m3D_d_sLUT_ET<uint_fast32_t, uint_fast16_t>));
 
-	// Register 3D BMI intrinsics if available
-#if defined(__BMI2__) || __AVX2__
-	f3D_64_encode.push_back(encode_3D_64_wrapper("BMI2 instruction set", &m3D_e_BMI<uint_fast64_t, uint_fast32_t>));
-	f3D_32_encode.push_back(encode_3D_32_wrapper("BMI2 instruction set", &m3D_e_BMI<uint_fast32_t, uint_fast16_t>));
-	f3D_64_decode.push_back(decode_3D_64_wrapper("BMI2 Instruction set", &m3D_d_BMI<uint_fast64_t, uint_fast32_t>));
-	f3D_32_decode.push_back(decode_3D_32_wrapper("BMI2 Instruction set", &m3D_d_BMI<uint_fast32_t, uint_fast16_t>));
-	f3D_64_encode.push_back(encode_3D_64_wrapper("MortonND: BMI2", MortonND_3D_64_BMI_Encode));
-	f3D_32_encode.push_back(encode_3D_32_wrapper("MortonND: BMI2", MortonND_3D_32_BMI_Encode));
-	f2D_64_encode.push_back(encode_2D_64_wrapper("MortonND: BMI2", MortonND_2D_64_BMI_Encode));
-	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: BMI2", MortonND_2D_32_BMI_Encode));
-
-	f3D_64_decode.push_back(decode_3D_64_wrapper("MortonND: BMI2", MortonND_3D_64_BMI_Decode));
-	f3D_32_decode.push_back(decode_3D_32_wrapper("MortonND: BMI2", MortonND_3D_32_BMI_Decode));
-	f2D_64_decode.push_back(decode_2D_64_wrapper("MortonND: BMI2", MortonND_2D_64_BMI_Decode));
-	f2D_32_decode.push_back(decode_2D_32_wrapper("MortonND: BMI2", MortonND_2D_32_BMI_Decode));
-#endif
-
 	// Register 2D 64-bit encode functions
 	f2D_64_encode.push_back(encode_2D_64_wrapper("LUT Shifted ET", [](uint_fast32_t x, uint_fast32_t y) -> uint_fast64_t { return m2D_e_sLUT_ET<uint_fast64_t, uint_fast16_t>((uint_fast16_t)x, (uint_fast16_t)y); }));
 	f2D_64_encode.push_back(encode_2D_64_wrapper("LUT Shifted", &m2D_e_sLUT<uint_fast64_t, uint_fast32_t>));
@@ -264,7 +278,6 @@ void registerFunctions() {
 	f2D_64_encode.push_back(encode_2D_64_wrapper("For ET", &m2D_e_for_ET<uint_fast64_t, uint_fast32_t>));
 	f2D_64_encode.push_back(encode_2D_64_wrapper("For", &m2D_e_for<uint_fast64_t, uint_fast32_t>));
 	f2D_64_encode.push_back(encode_2D_64_wrapper("MortonND: 4 chunks, 8 bit LUT", MortonND_2D_64_8_Encode));
-	f2D_64_encode.push_back(encode_2D_64_wrapper("MortonND: 2 chunks, 16 bit LUT", MortonND_2D_64_16_Encode));
 
 	// Register 2D 32-bit encode functions
 	f2D_32_encode.push_back(encode_2D_32_wrapper("For", &m2D_e_for<uint_fast32_t, uint_fast16_t>));
@@ -275,9 +288,8 @@ void registerFunctions() {
 	f2D_32_encode.push_back(encode_2D_32_wrapper("LUT Shifted", &m2D_e_sLUT<uint_fast32_t, uint_fast16_t>));
 	f2D_32_encode.push_back(encode_2D_32_wrapper("LUT Shifted ET", &m2D_e_sLUT_ET<uint_fast32_t, uint_fast16_t>));
 
-	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: 4 chunks, 4 bit LUT", MortonND_2D_32_4_Encode));
-	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: 2 chunks, 8 bit LUT", MortonND_2D_32_8_Encode));
-	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: 1 chunks, 16 bit LUT", MortonND_2D_32_16_Encode));
+	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: 4 chunks, 4 bit LUT", &MortonND_2D_32_4_Encode));
+	f2D_32_encode.push_back(encode_2D_32_wrapper("MortonND: 2 chunks, 8 bit LUT", &MortonND_2D_32_8_Encode));
 
 	// Register 2D 64-bit decode functions
 	f2D_64_decode.push_back(decode_2D_64_wrapper("LUT Shifted ET", &m2D_d_sLUT_ET<uint_fast64_t, uint_fast32_t>));
@@ -296,6 +308,9 @@ void registerFunctions() {
 	f2D_32_decode.push_back(decode_2D_32_wrapper("LUT ET", &m2D_d_LUT_ET<uint_fast32_t, uint_fast16_t>));
 	f2D_32_decode.push_back(decode_2D_32_wrapper("LUT Shifted", &m2D_d_sLUT<uint_fast32_t, uint_fast16_t>));
 	f2D_32_decode.push_back(decode_2D_32_wrapper("LUT Shifted ET", &m2D_d_sLUT_ET<uint_fast32_t, uint_fast16_t>));
+
+	registerBMI2Functions();
+	registerIfNotMSVC();
 }
 
 int main(int argc, char *argv[]) {
