@@ -13,4 +13,4 @@ notifications:
   on_success: never
   on_failure: always
 before_install: sudo apt-get update -qq
-script: make --directory=test test
+script: make --directory=test bmi2
