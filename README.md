@@ -1,4 +1,6 @@
 ## Fork Changes
+[![Build Status](https://travis-ci.org/kevinhartman/libmorton.svg?branch=master)](https://travis-ci.org/kevinhartman/libmorton) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT)
+
 This is a fork of libmorton which includes [Morton ND](https://github.com/kevinhartman/morton-nd) as a Git submodule.
 
 The purpose of this fork is to provide benchmarking for Morton ND using the libmorton validation and performance test library written by Jeroen Baert (@Forceflow). See [Morton ND's README.md](https://github.com/kevinhartman/morton-nd/blob/master/README.md#performance) for a sample set of performance metrics.
