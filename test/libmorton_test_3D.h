@@ -77,7 +77,15 @@ static bool check3D_DecodeFunction(const decode_f_3D_wrapper<morton, coord> &fun
 		}
 	}
 
-	if (encodingbits >= 63) { // Let's do some more tests
+	if (encodingbits >= 30) {
+		// Test max encoding which fits in uint32_t
+		function.decode((morton)0x3fffffff, x, y, z);
+		if (x != 0x3ff || y != 0x3ff || z != 0x3ff) {
+			printIncorrectDecoding3D<morton, coord>(function.description, (morton)0x7fffffffffffffff, x, y, z, 0x3ff, 0x3ff, 0x3ff);
+			everything_okay = false;
+		}
+	}
+
 	if (encodingbits >= 63) {
 		// Test max encoding which fits in uint64_t
 		function.decode((morton)0x7fffffffffffffff, x, y, z);
