@@ -16,6 +16,5 @@ add_executable(libmorton_test
         libmorton_test.h
         libmorton_test_2D.h
         libmorton_test_3D.h
-        libmorton_test_controlvalues.h
         timer.h
         util.h)
