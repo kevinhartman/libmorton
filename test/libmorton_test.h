@@ -23,8 +23,8 @@
 #include "../libmorton/include/morton2D.h"
 #include "../libmorton/include/morton3D.h"
 #include "../libmorton/include/morton.h"
-#include "../morton-nd/morton-nd/include/mortonND_LUT_encoder.h"
-#include "../morton-nd/morton-nd/include/mortonND_BMI2.h"
+#include <morton-nd/mortonND_LUT.h>
+#include <morton-nd/mortonND_BMI2.h>
 
 
 template <typename morton, typename coord>

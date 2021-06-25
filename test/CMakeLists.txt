@@ -8,9 +8,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fconstexpr-steps=2147483647")
 endif()
 
-
-include_directories(.)
-
 add_executable(libmorton_test
         libmorton_test.cpp
         libmorton_test.h
@@ -18,3 +15,6 @@ add_executable(libmorton_test
         libmorton_test_3D.h
         timer.h
         util.h)
+
+add_subdirectory(morton-nd)
+target_link_libraries(libmorton_test PRIVATE morton-nd::MortonND)
